@@ -20,10 +20,10 @@ class DialogService {
   Future<DialogResponse> showDialog(
       {@required Widget title,
       @required Widget content,
-      DialogType dialogType,
-      String optionLeft,
-      String optionRight,
-      String buttonText}) {
+      DialogType dialogType = DialogType.confirm,
+      String optionLeft = "Update",
+      String optionRight = "Delete",
+      String buttonText = "Close"}) {
     _dialogCompleter = Completer<DialogResponse>();
     _showDialogListener(DialogRequest(
         title: title,
