@@ -5,7 +5,7 @@ import 'package:flutter_inline_dialogs_app/dialogs/model.dart';
 import 'package:flutter_inline_dialogs_app/dialogs/service.dart';
 
 void main() {
-  setupLocator();
+  dialogSetupLocator();
   runApp(MyApp());
 }
 
@@ -41,16 +41,23 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   DialogService _dialogService = locator<DialogService>();
-  void _incrementCounter() {
+  Future<void> _incrementCounter() async {
     var _response = _dialogService.showDialog(
-        title: Text("$_counter"),
-        content: null,
-        dialogType: DialogType.confirm,
+        title: Icon(
+          Icons.watch_later,
+          size: 40,
+          color: Colors.green,
+        ),
+        content: Text("$_counter"),
+        dialogType: DialogType.option,
+        optionLeft: "Left",
+        optionRight: "Right",
         buttonText: "Close");
     setState(() {
       _counter++;
     });
-    print(_response.toString());
+//    await Future.delayed(Duration(seconds: 3));
+    _response.then((value) => debugPrint("${value.optionRight}"));
   }
 
   @override
