@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inline_dialogs_app/custom_utils/service_locator.dart';
 import 'package:flutter_inline_dialogs_app/dialogs/manager.dart';
@@ -39,26 +40,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String _rightBtn, _leftBtn = "";
+  bool _showOptionText = false, _showConfirmText = false, _confirmBtn;
   DialogService _dialogService = locator<DialogService>();
-  Future<void> _incrementCounter() async {
-    var _response = _dialogService.showDialog(
-        title: Icon(
-          Icons.watch_later,
-          size: 40,
-          color: Colors.green,
-        ),
-        content: Text("$_counter"),
-        dialogType: DialogType.option,
-        optionLeft: "Left",
-        optionRight: "Right",
-        buttonText: "Close");
-    setState(() {
-      _counter++;
-    });
-//    await Future.delayed(Duration(seconds: 3));
-    _response.then((value) => debugPrint("${value.optionRight}"));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,21 +54,133 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RaisedButton(
+                child: Text(" Option Dialog "),
+                onPressed: () {
+                  setState(() {
+                    _showOptionText = true;
+                    _showConfirmText = false;
+                    _rightBtn = null;
+                    _leftBtn = null;
+                  });
+                  var _dialogResponse = _dialogService.showDialog(
+                      title: Icon(
+                        Icons.code,
+                        size: 50,
+                        color: Colors.orange,
+                      ),
+                      content: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                          "Sample option dialog",
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                      ),
+                      dialogType: DialogType.option,
+                      optionRight: "Right",
+                      optionLeft: "Left");
+                  _dialogResponse.then((value) {
+                    setState(() {
+                      _rightBtn = value.optionRight;
+                      _leftBtn = value.optionLeft;
+                    });
+                  });
+                },
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RaisedButton(
+                child: Text("Confirm Dialog"),
+                onPressed: () {
+                  setState(() {
+                    _showConfirmText = true;
+                    _showOptionText = false;
+                    _confirmBtn = false;
+                  });
+                  var _dialogResponse = _dialogService.showDialog(
+                      title: Icon(
+                        Icons.done_outline,
+                        size: 50,
+                        color: Colors.green,
+                      ),
+                      content: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text(
+                          "Sample confirm dialog",
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                      ),
+                      dialogType: DialogType.confirm,
+                      buttonText: "Done");
+                  _dialogResponse.then((value) {
+                    setState(() {
+                      _confirmBtn = value.confirmed;
+                    });
+                  });
+                },
+              ),
             ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RaisedButton(
+                child: Text(" Waiter Dialog  "),
+                onPressed: () {
+                  setState(() {
+                    _showConfirmText = false;
+                    _showOptionText = false;
+                  });
+                  _dialogService.showDialog(
+                    title: Text(
+                      "Sample confirm dialog",
+                      style: Theme.of(context).textTheme.headline6,
+                    ),
+                    content: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: CupertinoActivityIndicator(
+                        radius: 20,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            _showOptionText
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 160.0),
+                    child: Text(
+                      'Left btn returns : $_leftBtn',
+                      style: Theme.of(context).textTheme.headline6,
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                : Container(),
+            _showOptionText
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Text(
+                      'Right btn Returns : $_rightBtn',
+                      style: Theme.of(context).textTheme.headline6,
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                : Container(),
+            _showConfirmText
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 160.0),
+                    child: Text(
+                      'Confirm btn returns : $_confirmBtn',
+                      style: Theme.of(context).textTheme.headline6,
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                : Container(),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

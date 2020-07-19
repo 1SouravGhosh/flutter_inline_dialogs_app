@@ -81,9 +81,12 @@ class _DialogManagerState extends State<DialogManager> {
         {
           return [
             CupertinoDialogAction(
-              child: Text(
-                buttonText,
-                style: TextStyle(color: Colors.blueAccent),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  buttonText,
+                  style: TextStyle(color: Colors.blueAccent),
+                ),
               ),
               onPressed: () {
                 _dialogService.dialogComplete(
