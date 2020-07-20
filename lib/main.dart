@@ -61,14 +61,14 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(8.0),
               child: RaisedButton(
                 child: Text(" Option Dialog "),
-                onPressed: () {
+                onPressed: () async {
                   setState(() {
                     _showOptionText = true;
                     _showConfirmText = false;
                     _rightBtn = null;
                     _leftBtn = null;
                   });
-                  var _dialogResponse = _dialogService.showDialog(
+                  var _dialogResponse = await _dialogService.showDialog(
                       title: Icon(
                         Icons.code,
                         size: 50,
@@ -84,11 +84,10 @@ class _MyHomePageState extends State<MyHomePage> {
                       dialogType: DialogType.option,
                       optionRight: "Right",
                       optionLeft: "Left");
-                  _dialogResponse.then((value) {
-                    setState(() {
-                      _rightBtn = value.optionRight;
-                      _leftBtn = value.optionLeft;
-                    });
+
+                  setState(() {
+                    _rightBtn = _dialogResponse.optionRight;
+                    _leftBtn = _dialogResponse.optionLeft;
                   });
                 },
               ),
@@ -97,13 +96,13 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(8.0),
               child: RaisedButton(
                 child: Text("Confirm Dialog"),
-                onPressed: () {
+                onPressed: () async {
                   setState(() {
                     _showConfirmText = true;
                     _showOptionText = false;
                     _confirmBtn = false;
                   });
-                  var _dialogResponse = _dialogService.showDialog(
+                  var _dialogResponse = await _dialogService.showDialog(
                       title: Icon(
                         Icons.done_outline,
                         size: 50,
@@ -118,10 +117,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       dialogType: DialogType.confirm,
                       buttonText: "Done");
-                  _dialogResponse.then((value) {
-                    setState(() {
-                      _confirmBtn = value.confirmed;
-                    });
+
+                  setState(() {
+                    _confirmBtn = _dialogResponse.confirmed;
                   });
                 },
               ),
@@ -141,21 +139,19 @@ class _MyHomePageState extends State<MyHomePage> {
                     });
                   });
                   _dialogService.showDialog(
-                    title: Text(
-                      "Sample waiter dialog",
-                      style: Theme.of(context).textTheme.headline6,
-                    ),
-                    content: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: CupertinoActivityIndicator(
-                        radius: 20,
+                      title: Text(
+                        "Sample waiter dialog",
+                        style: Theme.of(context).textTheme.headline6,
                       ),
-                    ),
-                  );
+                      content: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: CupertinoActivityIndicator(
+                          radius: 20,
+                        ),
+                      ),
+                      dialogType: DialogType.waiter);
                   await Future.delayed(Duration(seconds: 5));
-                  setState(() {
-                    _dialogService.dismissDialog();
-                  });
+                  _dialogService.dismissDialog();
                   _timer.cancel();
                 },
               ),
