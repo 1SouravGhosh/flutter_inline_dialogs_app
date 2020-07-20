@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inline_dialogs_app/custom_utils/service_locator.dart';
@@ -43,6 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String _rightBtn, _leftBtn = "";
   bool _showOptionText = false, _showConfirmText = false, _confirmBtn;
   DialogService _dialogService = locator<DialogService>();
+  Timer _counter;
 
   @override
   Widget build(BuildContext context) {
@@ -127,14 +130,19 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(8.0),
               child: RaisedButton(
                 child: Text(" Waiter Dialog  "),
-                onPressed: () {
+                onPressed: () async {
                   setState(() {
                     _showConfirmText = false;
                     _showOptionText = false;
                   });
+                  var _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+                    setState(() {
+                      _counter = timer;
+                    });
+                  });
                   _dialogService.showDialog(
                     title: Text(
-                      "Sample confirm dialog",
+                      "Sample waiter dialog",
                       style: Theme.of(context).textTheme.headline6,
                     ),
                     content: Padding(
@@ -144,6 +152,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   );
+                  await Future.delayed(Duration(seconds: 5));
+                  setState(() {
+                    _dialogService.dismissDialog();
+                  });
+                  _timer.cancel();
                 },
               ),
             ),
@@ -173,6 +186,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Text(
                       'Confirm btn returns : $_confirmBtn',
                       style: Theme.of(context).textTheme.headline6,
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                : Container(),
+            !_showConfirmText && !_showOptionText
+                ? Padding(
+                    padding: const EdgeInsets.only(top: 180.0),
+                    child: Text(
+                      'Counter: ${_counter?.tick}',
+                      style: Theme.of(context).textTheme.headline4,
                       textAlign: TextAlign.center,
                     ),
                   )

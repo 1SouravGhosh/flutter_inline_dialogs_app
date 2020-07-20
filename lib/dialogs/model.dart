@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-enum DialogType { option, confirm }
+enum DialogType { option, confirm, waiter }
 
 class DialogRequest {
   final Widget title;
@@ -16,7 +16,7 @@ class DialogRequest {
       this.buttonText = "Okay",
       this.optionRight = "Delete",
       this.optionLeft = "Update",
-      this.dialogType = DialogType.confirm});
+      this.dialogType = DialogType.waiter});
 }
 
 class DialogResponse {

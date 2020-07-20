@@ -32,6 +32,7 @@ class _DialogManagerState extends State<DialogManager> {
   void _showDialog(DialogRequest request) {
     showDialog(
         context: context,
+        barrierDismissible: request.dialogType != DialogType.waiter,
         builder: (context) => CupertinoAlertDialog(
               title: request.title,
               content: request.description,
@@ -44,7 +45,7 @@ class _DialogManagerState extends State<DialogManager> {
   }
 
   List<CupertinoDialogAction> _buildButton(
-      {DialogType dialogType = DialogType.confirm,
+      {DialogType dialogType = DialogType.waiter,
       String optionLeft = "Update",
       String optionRight = "Delete",
       String buttonText = "Okay"}) {
@@ -95,6 +96,11 @@ class _DialogManagerState extends State<DialogManager> {
               },
             )
           ];
+        }
+        break;
+      case DialogType.waiter:
+        {
+          return [];
         }
         break;
     }
