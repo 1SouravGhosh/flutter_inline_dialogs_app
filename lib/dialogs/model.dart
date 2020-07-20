@@ -13,10 +13,10 @@ class DialogRequest {
   DialogRequest(
       {this.title,
       this.description,
-      this.buttonText = "Okay",
-      this.optionRight = "Delete",
-      this.optionLeft = "Update",
-      this.dialogType = DialogType.waiter});
+      this.buttonText,
+      this.optionRight,
+      this.optionLeft,
+      this.dialogType});
 }
 
 class DialogResponse {

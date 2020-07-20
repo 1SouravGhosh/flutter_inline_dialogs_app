@@ -45,10 +45,10 @@ class _DialogManagerState extends State<DialogManager> {
   }
 
   List<CupertinoDialogAction> _buildButton(
-      {DialogType dialogType = DialogType.waiter,
-      String optionLeft = "Update",
-      String optionRight = "Delete",
-      String buttonText = "Okay"}) {
+      {DialogType dialogType,
+      String optionLeft,
+      String optionRight,
+      String buttonText}) {
     switch (dialogType) {
       case DialogType.option:
         {
