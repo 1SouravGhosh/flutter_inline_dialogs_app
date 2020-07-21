@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_inline_dialogs_app/custom_utils/service_locator.dart';
-import 'package:flutter_inline_dialogs_app/dialogs/manager.dart';
-import 'package:flutter_inline_dialogs_app/dialogs/model.dart';
-import 'package:flutter_inline_dialogs_app/dialogs/service.dart';
+import 'package:inline_dialogs/custom_utils/service_locator.dart';
+import 'package:inline_dialogs/dialogs/manager.dart';
+import 'package:inline_dialogs/dialogs/model.dart';
+import 'package:inline_dialogs/dialogs/service.dart';
 
 void main() {
   dialogSetupLocator();
